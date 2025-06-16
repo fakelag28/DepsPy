@@ -364,3 +364,47 @@ class DepsClient:
             
         player = await self.get_player(nickname, server_id)
         return player.vip_info 
+    
+    async def get_fraction_id_name(self, value: Union[int, str]) -> Union[int, str]:
+        fractions = {
+            1: "Полиция ЛС",
+            2: "RCSD",
+            3: "FBI",
+            4: "Полиция SF",
+            5: "Больница LS",
+            6: "Правительство",
+            7: "Тюрьма Строгого режима LV",
+            8: "Больница SF",
+            9: "Лицензеры",
+            10: "Radio LS",
+            11: "Grove Street",
+            12: "Vagos Family",
+            13: "East Side Ballas",
+            14: "Varrios Los Aztecas",
+            15: "The Rifa Gang",
+            16: "Russian Mafia",
+            17: "Yakuza",
+            18: "La Cosa Nostra",
+            19: "Warlock MC",
+            20: "Армия LS",
+            22: "Больница LV",
+            23: "Полиция LV",
+            24: "TV студия LV",
+            25: "Night Wolves",
+            26: "TV студия SF",
+            27: "Армия SF",
+            29: "Страховая компания",
+            30: "Tierra Robada Bikers",
+            31: "Больница Jefferson",
+            32: "Пожарный Департамент"
+        }
+            
+        if isinstance(value, int):
+            return fractions.get(value, "Unknown")
+        elif isinstance(value, str):
+            for id, name in fractions.items():
+                if name.lower() == value.lower():
+                    return id
+            return 0
+        else:
+            raise TypeError("Value must be int or str")
