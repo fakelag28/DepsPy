@@ -3,7 +3,7 @@ from datetime import datetime
 from depspy import DepsClient
 
 async def main():
-    client = DepsClient(api_key="your_api_key_here")
+    client = DepsClient(api_key="your_api_key")
     print(f"API Key: {client.api_key}")
     print(f"Corporate Key: {client.corporate_key}")
     print(f"Base URL: {client.base_url}")

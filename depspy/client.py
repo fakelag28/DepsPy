@@ -408,3 +408,21 @@ class DepsClient:
             return 0
         else:
             raise TypeError("Value must be int or str")
+
+    @cache_decorator(ttl=60)
+    async def get_map(self, server_id: int) -> MapResponse:
+        data = await self._make_request(
+            "GET",
+            "map",
+            params={"serverId": server_id}
+        )
+        return MapResponse(**data)
+
+    @cache_decorator(ttl=60)
+    async def get_ghetto(self, server_id: int) -> GhettoResponse:
+        data = await self._make_request(
+            "GET",
+            "ghetto",
+            params={"serverId": server_id}
+        )
+        return GhettoResponse(**data)

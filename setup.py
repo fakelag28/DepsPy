@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="depspy",
-    version="1.0.0",
+    version="1.1",
     packages=find_packages(),
     install_requires=[
         "aiohttp>=3.8.0",
@@ -10,7 +10,7 @@ setup(
     ],
     author="fakelag28",
     description="Асинхронная библиотека для работы с Deps API",
-    long_description=open("README.md").read(),
+    long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/fakelag28/DepsPy",
     classifiers=[

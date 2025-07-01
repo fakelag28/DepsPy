@@ -48,7 +48,7 @@ class Player(BaseModel):
     hours_played: int
     hunger: int
     job: str
-    last_seen: int
+    last_seen: Optional[int]
     law_abiding: int
     level: Level
     money: Money
@@ -57,6 +57,8 @@ class Player(BaseModel):
     property: Property
     server: Server
     spouse: Optional[str]
+    status: str
+    timestamp: int
     vip_info: VIPInfo
     wanted_level: int
     warnings: int
@@ -104,4 +106,64 @@ class ServerStatus(BaseModel):
     last_update: Optional[int]
 
 class Status(BaseModel):
-    servers: Dict[str, ServerStatus] 
+    servers: Dict[str, ServerStatus]
+
+class MapPOI(BaseModel):
+    name: str
+    city: str
+    x: float
+    y: float
+
+class MapHouse(BaseModel):
+    id: int
+    lx: float
+    ly: float
+    name: str
+    owner: str
+    hasAuction: int
+    auMinBet: int
+    auTimeEnd: int
+    auStartPrice: int
+    nearest_poi: MapPOI
+
+class MapBusiness(BaseModel):
+    id: int
+    lx: float
+    ly: float
+    name: str
+    type: int
+    owner: str
+    hasAuction: int
+    auMinBet: int
+    auTimeEnd: int
+    auStartPrice: int
+    nearest_poi: MapPOI
+
+class MapHouses(BaseModel):
+    hasOwner: list[MapHouse]
+    noOwner: list[MapHouse]
+    onAuction: list[MapHouse]
+    onMarketplace: list[MapHouse]
+
+class MapBusinessesNoAuction(BaseModel):
+    __root__: dict[str, list[MapBusiness]]
+
+class MapBusinesses(BaseModel):
+    onAuction: list[MapBusiness]
+    noAuction: MapBusinessesNoAuction
+    onMarketplace: list[MapBusiness]
+
+class MapResponse(BaseModel):
+    houses: MapHouses
+    businesses: MapBusinesses
+
+class GhettoSquare(BaseModel):
+    squareStart: Location
+    squareEnd: Location
+    color: int
+
+class GhettoData(BaseModel):
+    __root__: dict[str, GhettoSquare]
+
+class GhettoResponse(BaseModel):
+    data: GhettoData 
