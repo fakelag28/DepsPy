@@ -1,6 +1,5 @@
 from typing import Dict, List, Optional, Union
-from pydantic import BaseModel, Field
-from datetime import datetime
+from pydantic import BaseModel, Field, RootModel
 
 class Location(BaseModel):
     x: float
@@ -11,13 +10,30 @@ class Level(BaseModel):
     current_exp: int
     next_exp: int
 
+class MapPOI(BaseModel):
+    name: str
+    city: str
+    x: float
+    y: float
+
+class House(BaseModel):
+    id: int
+    location: Location
+    name: str
+    nearest_poi: MapPOI
+    on_auction: bool
+
+class Property(BaseModel):
+    houses: List[House]
+    businesses: List[dict]
+
 class Money(BaseModel):
     bank: int
     hand: int
     deposit: int
     phone_balance: int
     donate_currency: int
-    charity: Optional[str]
+    charity: Optional[Union[int, str]] = None
     total: int
     personal_accounts: Dict[str, str]
 
@@ -25,41 +41,46 @@ class Organization(BaseModel):
     name: str
     rank: str
     uniform: bool
-    last_seen: datetime
-
-class Property(BaseModel):
-    houses: List[Dict[str, Union[int, str, Location, bool]]]
-    businesses: List[Dict[str, Union[int, str, Location, bool, int]]]
 
 class VIPInfo(BaseModel):
-    level: str
-    add_vip: int
-    expiration_date: int
+    level: Optional[str] = None
+    add_vip: Union[str, int, None] = None
+    expiration_date: Optional[int] = None
 
 class Server(BaseModel):
     id: int
     name: str
 
+class StatusInfo(BaseModel):
+    online: bool
+    player_id: int
+
+class Admin(BaseModel):
+    forum_url: str
+    level: int
+    nickname: str
+    position: str
+    short_name: str
+    vk_url: str
+
 class Player(BaseModel):
     id: int
-    admin: bool
+    admin: Union[Admin, bool, None] = None
     drug_addiction: int
     health: int
     hours_played: int
     hunger: int
-    job: str
-    last_seen: Optional[int]
+    job: Optional[str] = None
     law_abiding: int
     level: Level
     money: Money
-    organization: Optional[Organization]
-    phone_number: int
+    organization: Optional[Organization] = None
+    phone_number: Optional[int] = None
     property: Property
     server: Server
-    spouse: Optional[str]
-    status: str
+    status: Union[StatusInfo, str, None] = None
     timestamp: int
-    vip_info: VIPInfo
+    vip_info: Optional[VIPInfo] = None
     wanted_level: int
     warnings: int
 
@@ -73,12 +94,12 @@ class Interviews(BaseModel):
 
 class OnlinePlayer(BaseModel):
     name: str
-    level: int
-    member: Optional[str]
-    position: Optional[str]
-    inUniform: Optional[bool]
-    isLeader: Optional[bool]
-    isZam: Optional[bool]
+    level: Optional[int] = None
+    member: Optional[str] = None
+    position: Optional[str] = None
+    inUniform: Optional[bool] = None
+    isLeader: Optional[bool] = None
+    isZam: Optional[bool] = None
 
 class OnlinePlayers(BaseModel):
     data: Dict[str, OnlinePlayer]
@@ -87,14 +108,6 @@ class OnlinePlayers(BaseModel):
 class Fractions(BaseModel):
     data: List[str]
     timestamp: int
-
-class Admin(BaseModel):
-    nickname: str
-    level: int
-    position: str
-    short_name: str
-    forum_url: str
-    vk_url: str
 
 class Admins(BaseModel):
     admins: List[Admin]
@@ -108,22 +121,16 @@ class ServerStatus(BaseModel):
 class Status(BaseModel):
     servers: Dict[str, ServerStatus]
 
-class MapPOI(BaseModel):
-    name: str
-    city: str
-    x: float
-    y: float
-
 class MapHouse(BaseModel):
     id: int
     lx: float
     ly: float
     name: str
-    owner: str
-    hasAuction: int
-    auMinBet: int
-    auTimeEnd: int
-    auStartPrice: int
+    owner: Optional[str] = None
+    hasAuction: Optional[bool] = None
+    auMinBet: Optional[int] = None
+    auTimeEnd: Optional[int] = None
+    auStartPrice: Optional[int] = None
     nearest_poi: MapPOI
 
 class MapBusiness(BaseModel):
@@ -132,11 +139,11 @@ class MapBusiness(BaseModel):
     ly: float
     name: str
     type: int
-    owner: str
-    hasAuction: int
-    auMinBet: int
-    auTimeEnd: int
-    auStartPrice: int
+    owner: Optional[str] = None
+    hasAuction: Optional[bool] = None
+    auMinBet: Optional[int] = None
+    auTimeEnd: Optional[int] = None
+    auStartPrice: Optional[int] = None
     nearest_poi: MapPOI
 
 class MapHouses(BaseModel):
@@ -145,8 +152,8 @@ class MapHouses(BaseModel):
     onAuction: list[MapHouse]
     onMarketplace: list[MapHouse]
 
-class MapBusinessesNoAuction(BaseModel):
-    __root__: dict[str, list[MapBusiness]]
+class MapBusinessesNoAuction(RootModel[dict[str, list[MapBusiness]]]):
+    pass
 
 class MapBusinesses(BaseModel):
     onAuction: list[MapBusiness]
@@ -162,8 +169,9 @@ class GhettoSquare(BaseModel):
     squareEnd: Location
     color: int
 
-class GhettoData(BaseModel):
-    __root__: dict[str, GhettoSquare]
+class GhettoData(RootModel[dict[str, GhettoSquare]]):
+    pass
 
 class GhettoResponse(BaseModel):
-    data: GhettoData 
+    data: GhettoData
+    timestamp: int 
