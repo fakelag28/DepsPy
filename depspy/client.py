@@ -26,6 +26,9 @@ def validate_server_id(server_id: int) -> bool:
 def validate_fraction_id(fraction_id: str) -> bool:
     return isinstance(fraction_id, str) and len(fraction_id) > 0
 
+def validate_fam_id(fam_id: int) -> bool:
+    return isinstance(fam_id, int) and fam_id > 0
+
 def cache_decorator(ttl: int = 300):
     def decorator(func):
         cache = {}
@@ -255,7 +258,7 @@ class DepsClient:
         self,
         server_id: int,
         fraction_id: str
-    ) -> OnlinePlayers:
+    ) -> FractionResponse:
         if not validate_server_id(server_id):
             raise InvalidServerIDError()
         if not validate_fraction_id(fraction_id):
@@ -266,7 +269,7 @@ class DepsClient:
             "fraction",
             params={"serverId": server_id, "fractionId": fraction_id}
         )
-        return OnlinePlayers(**data)
+        return FractionResponse(**data)
 
     @cache_decorator(ttl=300)
     async def get_admins(self, server_id: int) -> Admins:
@@ -411,6 +414,9 @@ class DepsClient:
 
     @cache_decorator(ttl=60)
     async def get_map(self, server_id: int) -> MapResponse:
+        if not validate_server_id(server_id):
+            raise InvalidServerIDError()
+
         data = await self._make_request(
             "GET",
             "map",
@@ -426,3 +432,53 @@ class DepsClient:
             params={"serverId": server_id}
         )
         return GhettoResponse(**data)
+
+    @cache_decorator(ttl=30)
+    async def get_leaders(self, server_id: int) -> LeadersResponse:
+        if not validate_server_id(server_id):
+            raise InvalidServerIDError()
+
+        data = await self._make_request(
+            "GET",
+            "leaders",
+            params={"serverId": server_id}
+        )
+        return LeadersResponse(**data)
+
+    @cache_decorator(ttl=30)
+    async def get_subleaders(self, server_id: int) -> SubleadersResponse:
+        if not validate_server_id(server_id):
+            raise InvalidServerIDError()
+
+        data = await self._make_request(
+            "GET",
+            "subleaders",
+            params={"serverId": server_id}
+        )
+        return SubleadersResponse(**data)
+
+    @cache_decorator(ttl=120)
+    async def get_families(self, server_id: int) -> FamilyListResponse:
+        if not validate_server_id(server_id):
+            raise InvalidServerIDError()
+        
+        data = await self._make_request(
+            "GET",
+            "families",
+            params={"serverId": server_id}
+        )
+        return FamilyListResponse(**data)
+
+    @cache_decorator(ttl=120)
+    async def get_family(self, server_id: int, fam_id: int) -> FamilyResponse:
+        if not validate_server_id(server_id):
+            raise InvalidServerIDError()
+        if not validate_fam_id(fam_id):
+            raise InvalidFamIDError()
+            
+        data = await self._make_request(
+            "GET",
+            "family",
+            params={"serverId": server_id, "famId": fam_id}
+        )
+        return FamilyResponse(**data)
