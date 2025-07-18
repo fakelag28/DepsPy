@@ -1,177 +1,226 @@
 from typing import Dict, List, Optional, Union
-from pydantic import BaseModel, Field, RootModel
+from pydantic import BaseModel, Field
 
 class Location(BaseModel):
-    x: Optional[Union[float, str, None]] = None
-    y: Optional[Union[float, str, None]] = None
+    x: Optional[float] = None
+    y: Optional[float] = None
 
 class Level(BaseModel):
-    level: Optional[Union[int, str, None]] = None
-    current_exp: Optional[Union[int, str, None]] = None
-    next_exp: Optional[Union[int, str, None]] = None
+    level: Optional[int] = None
+    current_exp: Optional[int] = None
+    next_exp: Optional[int] = None
 
 class MapPOI(BaseModel):
-    name: Optional[Union[str, None]] = None
-    city: Optional[Union[str, None]] = None
-    x: Optional[Union[float, str, None]] = None
-    y: Optional[Union[float, str, None]] = None
+    name: Optional[str] = None
+    city: Optional[str] = None
+    x: Optional[float] = None
+    y: Optional[float] = None
 
 class House(BaseModel):
-    id: Optional[Union[int, str, None]] = None
-    location: Optional[Union[Location, str, None]] = None
-    name: Optional[Union[str, None]] = None
-    nearest_poi: Optional[Union[MapPOI, str, None]] = None
-    on_auction: Optional[Union[bool, str, None]] = None
+    id: Optional[int] = None
+    location: Optional[Location] = None
+    name: Optional[str] = None
+    nearest_poi: Optional[MapPOI] = None
+    on_auction: Optional[bool] = None
 
 class Property(BaseModel):
-    houses: Optional[Union[List[Union[House, str, None]], str, None]] = None
-    businesses: Optional[Union[List[Union[dict, str, None]], str, None]] = None
+    houses: List[House] = []
+    businesses: List[dict] = []
 
 class Money(BaseModel):
-    bank: Optional[Union[int, str, None]] = None
-    hand: Optional[Union[int, str, None]] = None
-    deposit: Optional[Union[int, str, None]] = None
-    phone_balance: Optional[Union[int, str, None]] = None
-    donate_currency: Optional[Union[int, str, None]] = None
-    charity: Optional[Union[int, str, None]] = None
-    total: Optional[Union[int, str, None]] = None
-    personal_accounts: Optional[Union[Dict[str, Union[str, None]], str, None]] = None
+    bank: Optional[int] = None
+    hand: Optional[int] = None
+    deposit: Optional[int] = None
+    phone_balance: Optional[int] = None
+    donate_currency: Optional[int] = None
+    charity: Optional[int] = None
+    total: Optional[int] = None
+    personal_accounts: Optional[Dict[str, str]] = None
 
 class Organization(BaseModel):
-    name: Optional[Union[str, None]] = None
-    rank: Optional[Union[str, None]] = None
-    uniform: Optional[Union[bool, str, None]] = None
+    name: Optional[str] = None
+    rank: Optional[str] = None
+    uniform: Optional[bool] = None
 
 class VIPInfo(BaseModel):
-    level: Optional[Union[str, None]] = None
-    add_vip: Optional[Union[str, int, None]] = None
-    expiration_date: Optional[Union[int, str, None]] = None
+    level: Optional[str] = None
+    add_vip: Optional[Union[str, int]] = None
+    expiration_date: Optional[Union[int, str]] = None
 
 class Server(BaseModel):
-    id: Optional[Union[int, str, None]] = None
-    name: Optional[Union[str, None]] = None
+    id: Optional[int] = None
+    name: Optional[str] = None
 
 class StatusInfo(BaseModel):
-    online: Optional[Union[bool, str, None]] = None
-    player_id: Optional[Union[int, str, None]] = None
+    online: Optional[bool] = None
+    player_id: Optional[int] = None
 
 class Admin(BaseModel):
-    forum_url: Optional[Union[str, None]] = None
-    level: Optional[Union[int, str, None]] = None
-    nickname: Optional[Union[str, None]] = None
-    position: Optional[Union[str, None]] = None
-    short_name: Optional[Union[str, None]] = None
-    vk_url: Optional[Union[str, None]] = None
+    forum_url: Optional[str] = None
+    level: Optional[int] = None
+    nickname: Optional[str] = None
+    position: Optional[str] = None
+    short_name: Optional[str] = None
+    vk_url: Optional[str] = None
+
+class PlayerFamilyMemberInfo(BaseModel):
+    id: Optional[int] = None
+    nickname: Optional[str] = None
+    rank: Optional[int] = None
+    leader: bool = False
+    deputy: bool = False
+    warns: Optional[int] = None
+
+class PlayerFamilyInfo(BaseModel):
+    id: int
+    name: str
+    timestamp: int
+    member_info: PlayerFamilyMemberInfo
 
 class Player(BaseModel):
-    id: Optional[Union[int, str, None]] = None
-    admin: Optional[Union[Admin, bool, str, None]] = None
-    drug_addiction: Optional[Union[int, str, None]] = None
-    health: Optional[Union[int, str, None]] = None
-    hours_played: Optional[Union[int, str, None]] = None
-    hunger: Optional[Union[int, str, None]] = None
-    job: Optional[Union[str, None]] = None
-    law_abiding: Optional[Union[int, str, None]] = None
-    level: Optional[Union[Level, str, None]] = None
-    money: Optional[Union[Money, str, None]] = None
-    organization: Optional[Union[Organization, str, None]] = None
-    phone_number: Optional[Union[int, str, None]] = None
-    property: Optional[Union[Property, str, None]] = None
-    server: Optional[Union[Server, str, None]] = None
-    status: Optional[Union[StatusInfo, str, None]] = None
-    timestamp: Optional[Union[int, str, None]] = None
-    vip_info: Optional[Union[VIPInfo, str, None]] = None
-    wanted_level: Optional[Union[int, str, None]] = None
-    warnings: Optional[Union[int, str, None]] = None
+    id: Optional[int] = None
+    admin: Optional[Admin] = None
+    drug_addiction: Optional[int] = None
+    health: Optional[int] = None
+    hours_played: Optional[int] = None
+    hunger: Optional[int] = None
+    job: Optional[str] = None
+    law_abiding: Optional[int] = None
+    level: Optional[Level] = None
+    money: Optional[Money] = None
+    organization: Optional[Organization] = None
+    phone_number: Optional[int] = None
+    property: Optional[Property] = None
+    server: Optional[Server] = None
+    status: Optional[StatusInfo] = None
+    timestamp: Optional[int] = None
+    vip_info: Optional[VIPInfo] = None
+    wanted_level: Optional[int] = None
+    warnings: Optional[int] = None
+    family: Optional[PlayerFamilyInfo] = None
 
 class Interview(BaseModel):
-    place: Optional[Union[str, None]] = None
-    time: Optional[Union[str, None]] = None
+    place: Optional[str] = None
+    time: Optional[str] = None
 
 class Interviews(BaseModel):
-    data: Optional[Union[Dict[str, Union[Interview, str, None]], str, None]] = None
-    timestamp: Optional[Union[int, str, None]] = None
+    data: Optional[Dict[str, Interview]] = None
+    timestamp: Optional[int] = None
 
 class OnlinePlayer(BaseModel):
-    name: Optional[Union[str, None]] = None
-    level: Optional[Union[int, str, None]] = None
-    member: Optional[Union[str, None]] = None
-    position: Optional[Union[str, None]] = None
-    inUniform: Optional[Union[bool, str, None]] = None
-    isLeader: Optional[Union[bool, str, None]] = None
-    isZam: Optional[Union[bool, str, None]] = None
+    name: Optional[str] = None
+    level: Optional[int] = None
+    member: Optional[str] = None
+    position: Optional[str] = None
+    inUniform: Optional[bool] = None
+    isLeader: Optional[bool] = None
+    isZam: Optional[bool] = None
 
 class OnlinePlayers(BaseModel):
-    data: Optional[Union[Dict[str, Union[OnlinePlayer, str, None]], str, None]] = None
-    timestamp: Optional[Union[int, str, None]] = None
+    data: Optional[Dict[str, OnlinePlayer]] = None
+    timestamp: Optional[int] = None
+
+class LeadersResponse(BaseModel):
+    data: Optional[Dict[str, OnlinePlayer]] = None
+    timestamp: Optional[int] = None
+
+class SubleadersResponse(BaseModel):
+    data: Optional[Dict[str, OnlinePlayer]] = None
+    timestamp: Optional[int] = None
 
 class Fractions(BaseModel):
-    data: Optional[Union[List[Union[str, None]], str, None]] = None
-    timestamp: Optional[Union[int, str, None]] = None
+    data: Optional[List[str]] = None
+    timestamp: Optional[int] = None
 
 class Admins(BaseModel):
-    admins: Optional[Union[List[Union[Admin, str, None]], str, None]] = None
-    server: Optional[Union[Server, str, None]] = None
+    admins: List[Admin] = []
+    server: Optional[Server] = None
 
 class ServerStatus(BaseModel):
-    has_online: Optional[Union[bool, str, None]] = None
-    has_sobes: Optional[Union[bool, str, None]] = None
-    last_update: Optional[Union[int, str, None]] = None
+    has_online: Optional[bool] = None
+    has_sobes: Optional[bool] = None
+    last_update: Optional[int] = None
 
 class Status(BaseModel):
-    servers: Optional[Union[Dict[str, Union[ServerStatus, str, None]], str, None]] = None
+    servers: Optional[Dict[str, ServerStatus]] = None
 
 class MapHouse(BaseModel):
-    id: Optional[Union[int, str, None]] = None
-    lx: Optional[Union[float, str, None]] = None
-    ly: Optional[Union[float, str, None]] = None
-    name: Optional[Union[str, None]] = None
-    owner: Optional[Union[str, None]] = None
-    hasAuction: Optional[Union[bool, str, None]] = None
-    auMinBet: Optional[Union[int, str, None]] = None
-    auTimeEnd: Optional[Union[int, str, None]] = None
-    auStartPrice: Optional[Union[int, str, None]] = None
-    nearest_poi: Optional[Union[MapPOI, str, None]] = None
+    id: Optional[int] = None
+    lx: Optional[float] = None
+    ly: Optional[float] = None
+    name: Optional[str] = None
+    owner: Optional[str] = None
+    hasAuction: Optional[bool] = None
+    auMinBet: Optional[int] = None
+    auTimeEnd: Optional[int] = None
+    auStartPrice: Optional[int] = None
+    nearest_poi: Optional[MapPOI] = None
 
 class MapBusiness(BaseModel):
-    id: Optional[Union[int, str, None]] = None
-    lx: Optional[Union[float, str, None]] = None
-    ly: Optional[Union[float, str, None]] = None
-    name: Optional[Union[str, None]] = None
-    type: Optional[Union[int, str, None]] = None
-    owner: Optional[Union[str, None]] = None
-    hasAuction: Optional[Union[bool, str, None]] = None
-    auMinBet: Optional[Union[int, str, None]] = None
-    auTimeEnd: Optional[Union[int, str, None]] = None
-    auStartPrice: Optional[Union[int, str, None]] = None
-    nearest_poi: Optional[Union[MapPOI, str, None]] = None
+    id: Optional[int] = None
+    lx: Optional[float] = None
+    ly: Optional[float] = None
+    name: Optional[str] = None
+    type: Optional[int] = None
+    owner: Optional[str] = None
+    hasAuction: Optional[bool] = None
+    auMinBet: Optional[int] = None
+    auTimeEnd: Optional[int] = None
+    auStartPrice: Optional[int] = None
+    nearest_poi: Optional[MapPOI] = None
 
 class MapHouses(BaseModel):
-    hasOwner: Optional[Union[List[Union[MapHouse, str, None]], str, None]] = None
-    noOwner: Optional[Union[List[Union[MapHouse, str, None]], str, None]] = None
-    onAuction: Optional[Union[List[Union[MapHouse, str, None]], str, None]] = None
-    onMarketplace: Optional[Union[List[Union[MapHouse, str, None]], str, None]] = None
-
-class MapBusinessesNoAuction(RootModel[Optional[Union[Dict[str, Union[List[Union[MapBusiness, str, None]], str, None]], str, None]]]):
-    pass
+    hasOwner: List[MapHouse] = []
+    noOwner: List[MapHouse] = []
+    onAuction: List[MapHouse] = []
+    onMarketplace: List[MapHouse] = []
 
 class MapBusinesses(BaseModel):
-    onAuction: Optional[Union[List[Union[MapBusiness, str, None]], str, None]] = None
-    noAuction: Optional[Union[MapBusinessesNoAuction, str, None]] = None
-    onMarketplace: Optional[Union[List[Union[MapBusiness, str, None]], str, None]] = None
+    onAuction: List[MapBusiness] = []
+    noAuction: Optional[Dict[str, List[MapBusiness]]] = None
+    onMarketplace: List[MapBusiness] = []
 
 class MapResponse(BaseModel):
-    houses: Optional[Union[MapHouses, str, None]] = None
-    businesses: Optional[Union[MapBusinesses, str, None]] = None
+    houses: Optional[MapHouses] = None
+    businesses: Optional[MapBusinesses] = None
 
 class GhettoSquare(BaseModel):
-    squareStart: Optional[Union[Location, str, None]] = None
-    squareEnd: Optional[Union[Location, str, None]] = None
-    color: Optional[Union[int, str, None]] = None
+    squareStart: Optional[Location] = None
+    squareEnd: Optional[Location] = None
+    color: Optional[int] = None
 
-class GhettoData(RootModel[Optional[Union[Dict[str, Union[GhettoSquare, str, None]], str, None]]]):
-    pass
+class GhettoData(BaseModel):
+    data: Optional[Dict[str, GhettoSquare]] = None
 
 class GhettoResponse(BaseModel):
-    data: Optional[Union[GhettoData, str, None]] = None
-    timestamp: Optional[Union[int, str, None]] = None 
+    data: Optional[GhettoData] = None
+    timestamp: Optional[int] = None
+
+class FamilyMember(BaseModel):
+    id: int
+    nickname: str
+    rank: Optional[int] = None
+    player_id: Optional[int] = None
+    warns: Optional[int] = None
+    leader: bool = False
+    deputy: bool = False
+    joined_at: Optional[int] = None
+
+class FamilyBase(BaseModel):
+    id: int
+    name: Optional[str] = None
+    leader: Optional[str] = None
+    level: Optional[int] = None
+    flagId: Optional[int] = Field(None, alias="flagId")
+    membersCount: Optional[int] = Field(0, alias="membersCount")
+
+class Family(FamilyBase):
+    members: List[FamilyMember] = []
+
+class FamilyListResponse(BaseModel):
+    families: List[FamilyBase] = []
+    timestamp: int
+
+class FamilyResponse(BaseModel):
+    family: Family
+    timestamp: int
