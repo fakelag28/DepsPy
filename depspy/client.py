@@ -258,7 +258,7 @@ class DepsClient:
         self,
         server_id: int,
         fraction_id: str
-    ) -> FractionResponse:
+    ) -> OnlinePlayers:
         if not validate_server_id(server_id):
             raise InvalidServerIDError()
         if not validate_fraction_id(fraction_id):
@@ -269,7 +269,7 @@ class DepsClient:
             "fraction",
             params={"serverId": server_id, "fractionId": fraction_id}
         )
-        return FractionResponse(**data)
+        return OnlinePlayers(**data)
 
     @cache_decorator(ttl=300)
     async def get_admins(self, server_id: int) -> Admins:
