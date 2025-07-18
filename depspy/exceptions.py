@@ -70,6 +70,10 @@ class InvalidFractionIDError(InvalidRequestError):
     def __init__(self, error_code: str = "INVALID_FRACTION_ID", error_message: str = "Invalid fraction ID provided", error_id: str = None):
         super().__init__(error_code, error_message, error_id)
 
+class InvalidFamIDError(InvalidRequestError):
+    def __init__(self, error_code: str = "INVALID_FAM_ID", error_message: str = "Invalid family ID provided", error_id: str = None):
+        super().__init__(error_code, error_message, error_id)
+
 class CacheError(DepsError):
     def __init__(self, error_code: str = "CACHE_ERROR", error_message: str = "Cache error occurred", error_id: str = None):
         super().__init__(error_code, error_message, error_id, 0)
