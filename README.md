@@ -16,31 +16,23 @@ from depspy import DepsClient
 
 async def main():
     async with DepsClient("YOUR_API_KEY") as client:
-        # Получение информации об игроке
         player = await client.get_player("Nicolas_Reed", 5)
-        print(player)
-        await asyncio.sleep(3)
-        
-        # Получение списка онлайн игроков
+        if player:
+            print(player)
         online = await client.get_online_players(5)
-        print(f"Онлайн игроков: {len(online.data)}")
-        await asyncio.sleep(3)
-        
-        # Получение списка фракций
+        if online and online.data:
+            print(f"Онлайн игроков: {len(online.data)}")
         fractions = await client.get_fractions(5)
-        print(f"Доступно {len(fractions.data)} фракций: {fractions.data}")
-        await asyncio.sleep(3)
-
-        # Пробив каждой доступной фракции
-        # Используем asyncio.sleep дабы не достигать минутный лимит
-        for fraction_id in fractions.data:
-            try:
-                fraction_online = await client.get_fraction_online(5, fraction_id)
-                print(f"Онлайн во фракции '{fraction_id}': {len(fraction_online.data)}")
-                await asyncio.sleep(5)
-            except Exception as e:
-                print(f"Не удалось получить онлайн для фракции '{fraction_id}': {e}")
-                await asyncio.sleep(5)
+        if fractions and fractions.data:
+            print(f"Доступно {len(fractions.data)} фракций: {fractions.data}")
+        if fractions and fractions.data:
+            for fraction_id in fractions.data:
+                try:
+                    fraction_online = await client.get_fraction_online(5, fraction_id)
+                    if fraction_online and fraction_online.data:
+                        print(f"Онлайн во фракции '{fraction_id}': {len(fraction_online.data)}")
+                except Exception as e:
+                    print(f"Не удалось получить онлайн для фракции '{fraction_id}': {e}")
 
 if __name__ == "__main__":
     asyncio.run(main())

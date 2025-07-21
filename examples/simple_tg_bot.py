@@ -10,12 +10,11 @@ async def get_server_stats(server_id: int):
         online = await client.get_online_players(server_id)
         fractions = await client.get_fractions(server_id)
         admins = await client.get_admins(server_id)
-        
         return {
             "server_id": server_id,
-            "online_count": len(online.data),
-            "fractions_count": len(fractions.data),
-            "admins_count": len(admins.admins)
+            "online_count": len(online.data) if online and online.data else 0,
+            "fractions_count": len(fractions.data) if fractions and fractions.data else 0,
+            "admins_count": len(admins.admins) if admins and admins.admins else 0
         }
     except Exception as e:
         return {
@@ -27,7 +26,6 @@ async def cmd_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         server_id = int(context.args[0])
         stats = await get_server_stats(server_id)
-        
         if "error" in stats:
             await update.message.reply_text(f"Ошибка сервера {stats['server_id']}: {stats['error']}")
         else:
