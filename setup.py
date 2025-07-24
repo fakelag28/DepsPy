@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="depspy",
-    version="1.3.0",
+    version="1.3.1",
     packages=find_packages(),
     install_requires=[
         "aiohttp>=3.8.0",

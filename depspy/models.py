@@ -54,6 +54,7 @@ class Server(BaseModel):
 class StatusInfo(BaseModel):
     online: Optional[bool] = None
     player_id: Optional[int] = None
+    last_seen: Optional[int] = None
 
 class Admin(BaseModel):
     forum_url: Optional[str] = None
@@ -90,6 +91,7 @@ class Player(BaseModel):
     money: Optional[Money] = None
     organization: Optional[Organization] = None
     phone_number: Optional[int] = None
+    spouse: Optional[str] = None
     property: Optional[Property] = None
     server: Optional[Server] = None
     status: Optional[StatusInfo] = None
