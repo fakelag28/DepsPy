@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 test.py
+test1.py
 
 # C extensions
 *.so
@@ -187,10 +188,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
-# Cursor
-#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
-.cursorignore
-.cursorindexingignore

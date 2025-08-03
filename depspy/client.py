@@ -23,8 +23,12 @@ def validate_nickname(nickname: str) -> bool:
 def validate_server_id(server_id: int) -> bool:
     return isinstance(server_id, int) and server_id > 0
 
-def validate_fraction_id(fraction_id: str) -> bool:
-    return isinstance(fraction_id, str) and len(fraction_id) > 0
+def validate_fraction_id(fraction_id: Union[int, str]) -> bool:
+    if isinstance(fraction_id, int):
+        return fraction_id > 0
+    elif isinstance(fraction_id, str):
+        return len(fraction_id) > 0
+    return False
 
 def validate_fam_id(fam_id: int) -> bool:
     return isinstance(fam_id, int) and fam_id > 0
@@ -411,7 +415,42 @@ class DepsClient:
             return 0
         else:
             raise TypeError("Value must be int or str")
-
+        
+    async def list_fractions(self) -> Dict[int, str]:
+        fractions = {
+            1: "Полиция ЛС",
+            2: "RCSD",
+            3: "FBI",
+            4: "Полиция SF",
+            5: "Больница LS",
+            6: "Правительство",
+            7: "Тюрьма Строгого режима LV",
+            8: "Больница SF",
+            9: "Лицензеры",
+            10: "Radio LS",
+            11: "Grove Street",
+            12: "Vagos Family",
+            13: "East Side Ballas",
+            14: "Varrios Los Aztecas",
+            15: "The Rifa Gang",
+            16: "Russian Mafia",
+            17: "Yakuza",
+            18: "La Cosa Nostra",
+            19: "Warlock MC",
+            20: "Армия LS",
+            22: "Больница LV",
+            23: "Полиция LV",
+            24: "TV студия LV",
+            25: "Night Wolves",
+            26: "TV студия SF",
+            27: "Армия SF",
+            29: "Страховая компания",
+            30: "Tierra Robada Bikers",
+            31: "Больница Jefferson",
+            32: "Пожарный Департамент"
+        }
+        return fractions
+    
     @cache_decorator(ttl=60)
     async def get_map(self, server_id: int) -> MapResponse:
         if not validate_server_id(server_id):
@@ -482,3 +521,23 @@ class DepsClient:
             params={"serverId": server_id, "famId": fam_id}
         )
         return FamilyResponse(**data)
+
+    async def track_player_online(self, nickname: str, server_id: int, callback, check_interval: int = 90):
+        if not validate_nickname(nickname):
+            raise InvalidNicknameError()
+        if not validate_server_id(server_id):
+            raise InvalidServerIDError()
+
+        async def check_player_online():
+            while True:
+                try:
+                    online = await self.get_online_players(server_id)
+                    if any(player.name == nickname for player in online.data.values()):
+                        await callback()
+                        break
+                except Exception as e:
+                    logger.error(f"Ошибка трекинга игрока {nickname}: {e}")
+                    break
+                await asyncio.sleep(check_interval)
+
+        asyncio.create_task(check_player_online())
